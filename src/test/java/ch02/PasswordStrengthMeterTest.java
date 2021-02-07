@@ -34,6 +34,11 @@ public class PasswordStrengthMeterTest {
         assertStrength("", PasswordStrength.INVALID);
     }
 
+    @Test
+    void meetsOtherCriteria_except_for_Uppercase_Then_Normal() {
+        assertStrength("ab12!@df", PasswordStrength.NORMAL);
+    }
+
     private void assertStrength(String password, PasswordStrength expStr) {
         PasswordStrength result = meter.meter(password);
         assertEquals(result, expStr);
