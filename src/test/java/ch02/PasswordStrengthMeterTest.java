@@ -44,6 +44,11 @@ public class PasswordStrengthMeterTest {
         assertStrength("abdefghi", PasswordStrength.WEAK);
     }
 
+    @Test
+    void meetsOnlyNumCriteria_Then_Weak() {
+        assertStrength("12345", PasswordStrength.WEAK);
+    }
+
     private void assertStrength(String password, PasswordStrength expStr) {
         PasswordStrength result = meter.meter(password);
         assertEquals(expStr, result);
