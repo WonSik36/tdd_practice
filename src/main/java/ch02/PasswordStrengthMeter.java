@@ -3,7 +3,7 @@ package ch02;
 public class PasswordStrengthMeter {
 
     public PasswordStrength meter(String s) {
-        if(s == null)
+        if(s == null || s.isEmpty())
             return PasswordStrength.INVALID;
 
         if(s.length() < 8) {
