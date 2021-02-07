@@ -29,6 +29,11 @@ public class PasswordStrengthMeterTest {
         assertStrength(null, PasswordStrength.INVALID);
     }
 
+    @Test
+    void emptyInput_Then_Invalid() {
+        assertStrength("", PasswordStrength.INVALID);
+    }
+
     private void assertStrength(String password, PasswordStrength expStr) {
         PasswordStrength result = meter.meter(password);
         assertEquals(result, expStr);
