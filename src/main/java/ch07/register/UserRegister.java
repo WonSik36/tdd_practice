@@ -29,5 +29,7 @@ public class UserRegister {
         }
 
         userRepository.save(new User(id, pw, email));
+
+        emailNotifier.sendRegisterEmail(email);
     }
 }
