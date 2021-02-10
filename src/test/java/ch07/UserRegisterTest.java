@@ -2,6 +2,7 @@ package ch07;
 
 import ch07.exception.DupIdException;
 import ch07.exception.WeakPasswordException;
+import ch07.notifier.EmailNotifier;
 import ch07.notifier.SpyEmailNotifier;
 import ch07.passwordchecker.StubWeakPasswordChecker;
 import ch07.register.UserRegister;
@@ -9,10 +10,13 @@ import ch07.repository.MemoryUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
 public class UserRegisterTest {
     private UserRegister userRegister;
@@ -62,5 +66,22 @@ public class UserRegisterTest {
 
         assertTrue(spyEmailNotifier.isCalled());
         assertEquals("email@email.com", spyEmailNotifier.getEmail());
+    }
+
+    @DisplayName("Argument Captor 테스트")
+    @Test
+    void argumentCaptorTest() {
+        EmailNotifier mockEmailNotifier = mock(EmailNotifier.class);
+
+        userRegister = new UserRegister(stubWeakPasswordChecker, fakeRepository, mockEmailNotifier);
+
+        userRegister.register("id", "pw", "email@email.com");
+
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        then(mockEmailNotifier)
+                .should().sendRegisterEmail(captor.capture());
+
+        String realEmail = captor.getValue();
+        assertEquals("email@email.com", realEmail);
     }
 }
