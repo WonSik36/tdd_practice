@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -52,5 +53,18 @@ public class GameGenMockTest {
 
         String num = genMock.generate(GameLevel.MID);
         assertNull(num);
+    }
+
+    @DisplayName("AnyMatcher 사용")
+    @Test
+    void anyMatchTest() {
+        GameNumGen genMock = mock(GameNumGen.class);
+        given(genMock.generate(any())).willReturn("456");
+
+        String num = genMock.generate(GameLevel.LOW);
+        assertEquals("456", num);
+
+        String num2 = genMock.generate(GameLevel.MID);
+        assertEquals("456", num2);
     }
 }
