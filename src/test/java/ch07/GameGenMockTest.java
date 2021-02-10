@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -43,5 +42,15 @@ public class GameGenMockTest {
                 .clear();
 
         assertThrows(UnsupportedOperationException.class, () -> mockList.clear() );
+    }
+
+    @DisplayName("특정한 인자값이 아닌 경우 null 반환")
+    @Test
+    void notMathingParameter() {
+        GameNumGen genMock = mock(GameNumGen.class);
+        given(genMock.generate(GameLevel.LOW)).willReturn("123");
+
+        String num = genMock.generate(GameLevel.MID);
+        assertNull(num);
     }
 }
