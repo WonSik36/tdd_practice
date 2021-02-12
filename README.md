@@ -129,3 +129,32 @@ void mockTest() {
     assertEquals("1", realValue);
 }
 ```
+
+
+## 테스트 가능한 설계
+* 하드 코딩된 경로
+  * 생성자나 메서드 파라미터로 받기
+* 의존 객체를 직접 생성
+  * 의존 대상을 주입 받기
+  * 의존 대상을 테스트시 대역으로 변경
+* 정적 메서드 사용
+  * 외부 라이브러리가 정적 메서드를 제공한다면 대체할 수 없다.
+  * 따라서 이때는 어댑터 패턴을 적용한다.
+* 실행 시점에 따라 달라지는 결과
+  * 시간 생성 기능 분리 및 테스트시에는 대역 사용
+  * ```
+    public class Times {
+        public LocalDate today() {
+            return LocalDate.now();
+        }
+    }
+    
+    public class Target {
+        public void setTimes(Times times) {
+            this.times = times;
+        }
+    }
+    
+    ``` 
+* 역할이 섞여 있는 코드
+    * 역할에 따라 별도 클래스로 분리
